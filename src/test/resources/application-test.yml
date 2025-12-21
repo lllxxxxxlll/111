@@ -1,0 +1,69 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    defer-datasource-initialization: false
+    properties:
+      hibernate:
+        format_sql: true
+  
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+  
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 1
+  
+  cache:
+    type: simple
+
+# 外部API配置 - 测试环境使用模拟地址
+external-api:
+  multimodal:
+    base-url: http://localhost:8089/mock/multimodal
+    api-key: test-key
+    timeout: 5000
+    max-retries: 1
+  
+  image-processing:
+    base-url: http://localhost:8089/mock/image
+    api-key: test-key
+    timeout: 5000
+    max-retries: 1
+  
+  problem-solving:
+    base-url: http://localhost:8089/mock/problem
+    api-key: test-key
+    timeout: 5000
+    max-retries: 1
+  
+  education-partner:
+    base-url: http://localhost:8089/mock/education
+    api-key: test-key
+    timeout: 5000
+    max-retries: 1
+
+# JWT配置
+jwt:
+  secret: testSecretKey123456789012345678901234567890
+  expiration: 3600000 # 1小时
+  refresh-expiration: 7200000 # 2小时
+
+# 日志配置
+logging:
+  level:
+    com.education.ai: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG

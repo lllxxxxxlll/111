@@ -1,0 +1,243 @@
+spring:
+  application:
+    name: ai-education-assistant
+  
+  profiles:
+    active: dev
+  
+  # 数据库配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/ai_education?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: ${DB_USERNAME:ai_education}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #连接池:应对app的并发请求
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        use_sql_comments: true
+    open-in-view: false
+  
+  # Redis配置
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 20
+          max-idle: 10
+          min-idle: 5
+          max-wait: 2000ms
+  
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  
+  # 缓存配置
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000 # 1小时
+
+# 服务器配置
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+
+# 外部API配置
+external-api:
+  multimodal:
+    base-url: ${MULTIMODAL_API_URL:https://api.multimodal.example.com}
+    api-key: ${MULTIMODAL_API_KEY:your-api-key}
+    timeout: 30000
+    max-retries: 3
+  
+  image-processing:
+    base-url: ${IMAGE_API_URL:https://api.imageprocessing.example.com}
+    api-key: ${IMAGE_API_KEY:your-api-key}
+    timeout: 20000
+    max-retries: 2
+  
+  problem-solving:
+    base-url: ${PROBLEM_API_URL:https://api.problemsolving.example.com}
+    api-key: ${PROBLEM_API_KEY:your-api-key}
+    timeout: 25000
+    max-retries: 3
+  
+  education-partner:
+    base-url: ${EDUCATION_API_URL:https://api.education.example.com}
+    api-key: ${EDUCATION_API_KEY:your-api-key}
+    timeout: 15000
+    max-retries: 2
+
+# JWT配置
+jwt:
+  secret: ${JWT_SECRET:mySecretKey123456789012345678901234567890}
+  expiration: 86400000 # 24小时
+  refresh-expiration: 604800000 # 7天
+
+# Resilience4j熔断器配置
+resilience4j:
+  circuitbreaker:
+    instances:
+      multimodal-api:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+      image-recognition-api:
+        failure-rate-threshold: 60
+        wait-duration-in-open-state: 20s
+        sliding-window-size: 8
+        minimum-number-of-calls: 4
+      problem-solving-api:
+        failure-rate-threshold: 55
+        wait-duration-in-open-state: 25s
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+      education-partner-api:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 15s
+        sliding-window-size: 6
+        minimum-number-of-calls: 3
+  
+  retry:
+    instances:
+      default:
+        max-attempts: 3
+        wait-duration: 1s
+        exponential-backoff-multiplier: 2
+
+# 监控配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# 日志配置
+logging:
+  level:
+    com.education.ai: INFO
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/ai-education-assistant.log
+    max-size: 100MB
+    max-history: 30
+
+# 应用自定义配置
+app:
+  # 性能监控阈值
+  performance:
+    api-response-threshold: 5000 # 5秒
+    failure-rate-threshold: 0.05 # 5%
+  
+  # 限流配置
+  rate-limit:
+    requests-per-minute: 100
+    burst-capacity: 200
+  
+  # 实验检测配置
+  experiment:
+    max-concurrent-sessions: 50
+    session-timeout: 3600000 # 1小时
+  
+  # 安全配置
+  security:
+    cors:
+      allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:8080}
+      allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+      allowed-headers: "*"
+      allow-credentials: true
+
+---
+# 开发环境配置
+spring:
+  config:
+    activate:
+      on-profile: dev
+  
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    com.education.ai: DEBUG
+    org.springframework.security: DEBUG
+
+---
+# 测试环境配置
+spring:
+  config:
+    activate:
+      on-profile: test
+  
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+
+---
+# 生产环境配置
+spring:
+  config:
+    activate:
+      on-profile: prod
+  
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  level:
+    com.education.ai: WARN
+    org.springframework.security: WARN
