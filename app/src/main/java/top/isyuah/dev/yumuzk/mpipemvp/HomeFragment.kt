@@ -13,6 +13,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         view.findViewById<MaterialButton>(R.id.btn_enter_feature).setOnClickListener {
             startActivity(Intent(requireContext(), FeatureActivity::class.java))
         }
+        view.findViewById<MaterialButton>(R.id.btn_synonym_compare).setOnClickListener {
+            startActivity(Intent(requireContext(), SynonymCompareActivity::class.java))
+        }
     }
 }
 
