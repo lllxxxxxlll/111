@@ -1,7 +1,23 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 }
+
+fun String.escapeForJavaString(): String = replace("\\", "\\\\").replace("\"", "\\\"")
+
+val siliconflowApiKey: String =
+    run {
+        val properties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { properties.load(it) }
+        }
+        properties.getProperty("SILICONFLOW_API_KEY")
+            ?: System.getenv("SILICONFLOW_API_KEY")
+            ?: ""
+    }.escapeForJavaString()
 
 android {
     namespace = "top.isyuah.dev.yumuzk.mpipemvp"
@@ -15,6 +31,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "SILICONFLOW_API_KEY", "\"$siliconflowApiKey\"")
     }
 
     buildTypes {
@@ -35,6 +53,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -46,9 +65,8 @@ dependencies {
     implementation("androidx.camera:camera-view:$camerax_version")
     
     implementation(libs.mediapipe.tasks.vision)
-
-    // 添加 OkHttp 网络请求库
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.android)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
