@@ -231,7 +231,7 @@ class ExperimentSessionRepositoryTest extends RepositoryTestBase {
         recentSession.setStartTime(oneHourAgo.plusMinutes(30));
         
         ExperimentSession newSession = createTestSession("session3", "user1", "biology");
-        newSession.setStartTime(now);
+        newSession.setStartTime(now.minusMinutes(10)); // 确保在范围内
         
         experimentSessionRepository.save(oldSession);
         experimentSessionRepository.save(recentSession);
@@ -240,7 +240,7 @@ class ExperimentSessionRepositoryTest extends RepositoryTestBase {
         
         // 测试时间范围查询
         List<ExperimentSession> recentSessions = 
-            experimentSessionRepository.findByStartTimeBetween(oneHourAgo, now);
+            experimentSessionRepository.findByStartTimeBetween(oneHourAgo, now.plusMinutes(1));
         assertEquals(2, recentSessions.size());
     }
     

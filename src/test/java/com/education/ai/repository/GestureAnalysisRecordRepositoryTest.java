@@ -149,7 +149,7 @@ class GestureAnalysisRecordRepositoryTest extends RepositoryTestBase {
         recentRecord.setCreatedAt(oneHourAgo.plusMinutes(30));
         
         GestureAnalysisRecord newRecord = createTestRecord("analysis3", "user1", "gesture3");
-        newRecord.setCreatedAt(now);
+        newRecord.setCreatedAt(now.minusMinutes(10)); // 确保在范围内
         
         gestureAnalysisRecordRepository.save(oldRecord);
         gestureAnalysisRecordRepository.save(recentRecord);
@@ -158,7 +158,7 @@ class GestureAnalysisRecordRepositoryTest extends RepositoryTestBase {
         
         // 测试时间范围查询
         List<GestureAnalysisRecord> recentRecords = 
-            gestureAnalysisRecordRepository.findByCreatedAtBetween(oneHourAgo, now);
+            gestureAnalysisRecordRepository.findByCreatedAtBetween(oneHourAgo, now.plusMinutes(1));
         assertEquals(2, recentRecords.size());
     }
     

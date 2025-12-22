@@ -87,26 +87,47 @@ public interface ApiCallLogRepository extends JpaRepository<ApiCallLog, Long> {
     /**
      * 计算API平均响应时间
      */
-    @Query("SELECT AVG(a.responseTimeMs) FROM ApiCallLog a WHERE a.apiName = :apiName AND a.success = TRUE")
-    Double getAverageResponseTime(@Param("apiName") String apiName);
+    @Query("SELECT AVG(a.responseTimeMs) FROM ApiCallLog a WHERE a.apiName = :apiName AND a.success = :success")
+    Double getAverageResponseTime(@Param("apiName") String apiName, @Param("success") Boolean success);
+    
+    /**
+     * 计算API平均响应时间（只计算成功的调用）
+     */
+    default Double getAverageResponseTime(String apiName) {
+        return getAverageResponseTime(apiName, true);
+    }
     
     /**
      * 计算API成功率
      */
-    @Query("SELECT (COUNT(a) * 100.0 / (SELECT COUNT(b) FROM ApiCallLog b WHERE b.apiName = :apiName)) " +
-           "FROM ApiCallLog a WHERE a.apiName = :apiName AND a.success = TRUE")
-    Double getSuccessRate(@Param("apiName") String apiName);
+    @Query("SELECT (CAST(COUNT(CASE WHEN a.success = :success THEN 1 END) AS DOUBLE) * 100.0 / COUNT(a)) " +
+           "FROM ApiCallLog a WHERE a.apiName = :apiName")
+    Double getSuccessRate(@Param("apiName") String apiName, @Param("success") Boolean success);
+    
+    /**
+     * 计算API成功率
+     */
+    default Double getSuccessRate(String apiName) {
+        return getSuccessRate(apiName, true);
+    }
     
     /**
      * 获取API调用统计信息
      */
     @Query("SELECT a.apiName, COUNT(a) as totalCalls, " +
-           "SUM(CASE WHEN a.success = TRUE THEN 1 ELSE 0 END) as successCalls, " +
+           "SUM(CASE WHEN a.success = :success THEN 1 ELSE 0 END) as successCalls, " +
            "AVG(a.responseTimeMs) as avgResponseTime " +
            "FROM ApiCallLog a " +
            "WHERE a.callTime >= :startTime " +
            "GROUP BY a.apiName")
-    List<Object[]> getApiStatistics(@Param("startTime") LocalDateTime startTime);
+    List<Object[]> getApiStatistics(@Param("startTime") LocalDateTime startTime, @Param("success") Boolean success);
+    
+    /**
+     * 获取API调用统计信息（默认统计成功的调用）
+     */
+    default List<Object[]> getApiStatistics(LocalDateTime startTime) {
+        return getApiStatistics(startTime, true);
+    }
     
     /**
      * 获取每小时API调用量统计
@@ -132,22 +153,37 @@ public interface ApiCallLogRepository extends JpaRepository<ApiCallLog, Long> {
      * 查找错误率高的API
      */
     @Query("SELECT a.apiName, " +
-           "(COUNT(CASE WHEN a.success = FALSE THEN 1 END) * 100.0 / COUNT(a)) as errorRate " +
+           "(CAST(COUNT(CASE WHEN a.success = :success THEN 1 END) AS DOUBLE) * 100.0 / COUNT(a)) as errorRate " +
            "FROM ApiCallLog a " +
            "WHERE a.callTime >= :startTime " +
            "GROUP BY a.apiName " +
-           "HAVING (COUNT(CASE WHEN a.success = FALSE THEN 1 END) * 100.0 / COUNT(a)) > :threshold " +
-           "ORDER BY (COUNT(CASE WHEN a.success = FALSE THEN 1 END) * 100.0 / COUNT(a)) DESC")
+           "HAVING (CAST(COUNT(CASE WHEN a.success = :success THEN 1 END) AS DOUBLE) * 100.0 / COUNT(a)) > :threshold " +
+           "ORDER BY (CAST(COUNT(CASE WHEN a.success = :success THEN 1 END) AS DOUBLE) * 100.0 / COUNT(a)) DESC")
     List<Object[]> findHighErrorRateApis(@Param("startTime") LocalDateTime startTime, 
-                                        @Param("threshold") Double threshold);
+                                        @Param("threshold") Double threshold,
+                                        @Param("success") Boolean success);
+    
+    /**
+     * 查找错误率高的API（默认查找失败的调用）
+     */
+    default List<Object[]> findHighErrorRateApis(LocalDateTime startTime, Double threshold) {
+        return findHighErrorRateApis(startTime, threshold, false);
+    }
     
     /**
      * 查找响应时间异常的API调用
      */
     @Query("SELECT a FROM ApiCallLog a WHERE a.responseTimeMs > " +
-           "(SELECT AVG(b.responseTimeMs) * 3 FROM ApiCallLog b WHERE b.apiName = a.apiName AND b.success = TRUE) " +
+           "(SELECT AVG(b.responseTimeMs) * 3 FROM ApiCallLog b WHERE b.apiName = a.apiName AND b.success = :success) " +
            "ORDER BY a.responseTimeMs DESC")
-    List<ApiCallLog> findAbnormalResponseTimes();
+    List<ApiCallLog> findAbnormalResponseTimes(@Param("success") Boolean success);
+    
+    /**
+     * 查找响应时间异常的API调用（默认只查看成功的调用）
+     */
+    default List<ApiCallLog> findAbnormalResponseTimes() {
+        return findAbnormalResponseTimes(true);
+    }
     
     /**
      * 删除指定时间之前的日志记录
@@ -162,10 +198,27 @@ public interface ApiCallLogRepository extends JpaRepository<ApiCallLog, Long> {
            "AVG(a.responseTimeMs) as avgResponseTime, " +
            "MAX(a.responseTimeMs) as maxResponseTime, " +
            "MIN(a.responseTimeMs) as minResponseTime, " +
-           "(SUM(CASE WHEN a.success = TRUE THEN 1 ELSE 0 END) * 100.0 / COUNT(a)) as successRate " +
+           "(CAST(SUM(CASE WHEN a.success = :success THEN 1 ELSE 0 END) AS DOUBLE) * 100.0 / COUNT(a)) as successRate " +
            "FROM ApiCallLog a " +
            "WHERE a.callTime >= :startTime " +
            "GROUP BY a.apiName " +
            "ORDER BY a.apiName")
-    List<Object[]> getApiHealthReport(@Param("startTime") LocalDateTime startTime);
+    List<Object[]> getApiHealthReport(@Param("startTime") LocalDateTime startTime, @Param("success") Boolean success);
+    
+    /**
+     * 获取API健康状态报告（默认统计成功的调用）
+     */
+    default List<Object[]> getApiHealthReport(LocalDateTime startTime) {
+        return getApiHealthReport(startTime, true);
+    }
+    
+    /**
+     * 根据API名称包含指定字符串和时间范围查找调用日志
+     */
+    List<ApiCallLog> findByApiNameContainingAndCallTimeAfter(String apiName, LocalDateTime startTime);
+    
+    /**
+     * 查找指定时间之后的所有调用日志
+     */
+    List<ApiCallLog> findByCallTimeAfter(LocalDateTime startTime);
 }

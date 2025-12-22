@@ -95,7 +95,7 @@ public interface GestureAnalysisRecordRepository extends JpaRepository<GestureAn
      * 计算用户的平均置信度
      */
     @Query("SELECT AVG(g.confidence) FROM GestureAnalysisRecord g " +
-           "WHERE g.userId = :userId AND g.status = 'SUCCESS'")
+           "WHERE g.userId = :userId AND g.status = com.education.ai.model.AnalysisStatus.SUCCESS")
     Double getAverageConfidenceByUser(@Param("userId") String userId);
     
     /**
@@ -112,7 +112,7 @@ public interface GestureAnalysisRecordRepository extends JpaRepository<GestureAn
      * 查找高置信度的成功记录
      */
     @Query("SELECT g FROM GestureAnalysisRecord g " +
-           "WHERE g.status = 'SUCCESS' AND g.confidence >= :minConfidence " +
+           "WHERE g.status = com.education.ai.model.AnalysisStatus.SUCCESS AND g.confidence >= :minConfidence " +
            "ORDER BY g.confidence DESC")
     List<GestureAnalysisRecord> findHighConfidenceRecords(@Param("minConfidence") Double minConfidence);
     
@@ -120,7 +120,7 @@ public interface GestureAnalysisRecordRepository extends JpaRepository<GestureAn
      * 查找需要重新处理的记录（失败或超时）
      */
     @Query("SELECT g FROM GestureAnalysisRecord g " +
-           "WHERE g.status IN ('FAILED', 'TIMEOUT') " +
+           "WHERE g.status IN (com.education.ai.model.AnalysisStatus.FAILED, com.education.ai.model.AnalysisStatus.TIMEOUT) " +
            "ORDER BY g.createdAt DESC")
     List<GestureAnalysisRecord> findRecordsForReprocessing();
     

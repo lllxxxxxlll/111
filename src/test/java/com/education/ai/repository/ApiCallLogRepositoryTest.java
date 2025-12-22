@@ -131,7 +131,7 @@ class ApiCallLogRepositoryTest extends RepositoryTestBase {
         recentLog.setCallTime(oneHourAgo.plusMinutes(30));
         
         ApiCallLog newLog = createTestApiLog("api3", 3000L, true);
-        newLog.setCallTime(now);
+        newLog.setCallTime(now.minusMinutes(10)); // 确保在范围内
         
         apiCallLogRepository.save(oldLog);
         apiCallLogRepository.save(recentLog);
@@ -139,7 +139,7 @@ class ApiCallLogRepositoryTest extends RepositoryTestBase {
         flushAndClear();
         
         // 测试时间范围查询
-        List<ApiCallLog> recentLogs = apiCallLogRepository.findByCallTimeBetween(oneHourAgo, now);
+        List<ApiCallLog> recentLogs = apiCallLogRepository.findByCallTimeBetween(oneHourAgo, now.plusMinutes(1));
         assertEquals(2, recentLogs.size());
     }
     
