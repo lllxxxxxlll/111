@@ -33,6 +33,9 @@
             android:name=".SynonymCompareActivity"
             android:exported="false" />
         <activity
+            android:name=".PhotoSearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".HistoryActivity"
             android:exported="false" />
         <activity
