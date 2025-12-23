@@ -8,6 +8,15 @@
 
         <item name="colorSecondary">@color/color_secondary</item>
         <item name="colorOnSecondary">@color/color_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/color_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/color_on_secondary_container</item>
+
+        <item name="colorTertiary">@color/color_tertiary</item>
+        <item name="colorOnTertiary">@color/color_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/color_tertiary_container</item>
+
+        <item name="colorError">@color/color_error</item>
+        <item name="colorErrorContainer">@color/color_error_container</item>
 
         <item name="android:colorBackground">@color/color_background</item>
         <item name="android:windowBackground">@color/color_background</item>
@@ -18,24 +27,92 @@
         <item name="colorSurfaceVariant">@color/color_surface_variant</item>
         <item name="colorOnSurfaceVariant">@color/color_on_surface_variant</item>
         <item name="colorOutline">@color/color_outline</item>
+        <item name="colorOutlineVariant">@color/color_outline_variant</item>
 
-        <item name="android:statusBarColor">@color/color_background</item>
-        <item name="android:navigationBarColor">@color/color_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 
     <style name="Theme.MPipeMVP" parent="Base.Theme.MPipeMVP" />
 
+    <!-- Shape Appearances -->
     <style name="ShapeAppearance.MPipeMVP.Circle" parent="ShapeAppearance.Material3.Corner.Full" />
     <style name="ShapeAppearance.MPipeMVP.Pill" parent="ShapeAppearance.Material3.Corner.Full" />
+    <style name="ShapeAppearance.MPipeMVP.SmallCorner" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+    <style name="ShapeAppearance.MPipeMVP.MediumCorner" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    <style name="ShapeAppearance.MPipeMVP.LargeCorner" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
 
-    <style
-        name="Widget.MPipeMVP.BottomNavigationView.ActiveIndicator"
+    <!-- Bottom Navigation -->
+    <style name="Widget.MPipeMVP.BottomNavigationView.ActiveIndicator"
         parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:width">88dp</item>
         <item name="android:height">32dp</item>
         <item name="marginHorizontal">10dp</item>
         <item name="shapeAppearance">@style/ShapeAppearance.MPipeMVP.Pill</item>
         <item name="android:color">@color/color_primary_container</item>
+    </style>
+
+    <!-- Cards - Flat Design -->
+    <style name="Widget.MPipeMVP.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/color_surface</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <style name="Widget.MPipeMVP.Card.Featured" parent="Widget.MPipeMVP.Card">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">@color/color_outline</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <!-- Buttons -->
+    <style name="Widget.MPipeMVP.Button" parent="Widget.Material3.Button">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="iconPadding">8dp</item>
+    </style>
+
+    <style name="Widget.MPipeMVP.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="iconPadding">8dp</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
+    <style name="Widget.MPipeMVP.Button.Icon" parent="Widget.Material3.Button.IconButton">
+        <item name="iconSize">24dp</item>
+        <item name="iconTint">@color/color_on_surface_variant</item>
+    </style>
+
+    <!-- Text Appearances -->
+    <style name="TextAppearance.MPipeMVP.Headline" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">@color/color_on_surface</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextAppearance.MPipeMVP.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/color_on_surface</item>
+    </style>
+
+    <style name="TextAppearance.MPipeMVP.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/color_on_surface_variant</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+    <style name="TextAppearance.MPipeMVP.Label" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textColor">@color/color_on_surface_variant</item>
     </style>
 </resources>

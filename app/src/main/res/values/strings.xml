@@ -1,13 +1,88 @@
 <resources>
     <string name="app_name">MPipeMVP</string>
+    
+    <!-- Navigation -->
     <string name="nav_home">首页</string>
     <string name="nav_profile">个人</string>
+    <string name="back">返回</string>
+    
+    <!-- Home -->
     <string name="home_title">首页</string>
     <string name="home_subtitle">统一入口 · 手势指向 · AI 识别</string>
-    <string name="enter_feature">进入功能</string>
-    <string name="profile_placeholder">个人页面（占位）</string>
-    <string name="profile_avatar">头像</string>
-    <string name="profile_name_placeholder">访客</string>
+    <string name="welcome_message">欢迎回来！</string>
+    <string name="welcome_subtitle">为你提供智能的学习助手工具</string>
+    
+    <!-- Features -->
     <string name="feature_card_title">指向分析</string>
     <string name="feature_card_desc">打开摄像头，识别手指指向区域并发起 AI 分析。</string>
+    <string name="feature_subtitle">智能识别</string>
+    <string name="enter_feature">进入功能</string>
+    
+    <string name="synonym_card_title">英语同义词比较</string>
+    <string name="synonym_card_desc">比较两个英文单词的含义、同义词与例句。</string>
+    <string name="enter_synonym_compare">英语同义词比较</string>
+    
+    <string name="photo_search_card_title">拍照搜题</string>
+    <string name="photo_search_card_desc">拍照识别题目并检索相关答案与解析。</string>
+    <string name="photo_search_subtitle">AI 识别</string>
+    <string name="enter_photo_search">拍照搜题</string>
+    
+    <!-- Photo Search -->
+    <string name="photo_search_title">拍照搜题</string>
+    <string name="photo_count_placeholder">已添加 %1$d 张照片</string>
+    <string name="take_photo">拍照</string>
+    <string name="select_from_album">相册</string>
+    <string name="ai_answer">AI 解答</string>
+    <string name="ai_feature">AI 功能</string>
+    
+    <!-- Empty States -->
+    <string name="empty_photos">没有照片</string>
+    <string name="empty_photos_title">还没有照片</string>
+    <string name="empty_photos_subtitle">请拍照或从相册选择图片</string>
+    
+    <!-- Photo Actions -->
+    <string name="photo_item">照片</string>
+    <string name="delete_photo">删除</string>
+    
+    <!-- AI Result -->
+    <string name="ai_result">AI 结果</string>
+    <string name="ai_result_title">AI 分析结果</string>
+    <string name="ai_answer_section">答案</string>
+    <string name="ai_analysis_section">解析</string>
+    <string name="view_animation">查看动画演示</string>
+    
+    <!-- Profile -->
+    <string name="profile_placeholder">个人页面</string>
+    <string name="profile_avatar">头像</string>
+    <string name="profile_name_placeholder">访客</string>
+    <string name="profile_subtitle">查看我的使用统计和设置</string>
+    
+    <!-- Statistics -->
+    <string name="stats_title">使用统计</string>
+    <string name="stats_photos">照片</string>
+    <string name="stats_questions">题目</string>
+    <string name="stats_days">天</string>
+    <string name="stats_photos_count">0</string>
+    <string name="stats_questions_count">0</string>
+    <string name="stats_days_count">0</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">设置</string>
+    <string name="settings_general">通用设置</string>
+    <string name="settings_notifications">通知</string>
+    <string name="settings_language">语言</string>
+    <string name="settings_theme">主题</string>
+    <string name="settings_about">关于</string>
+    <string name="settings_version">版本</string>
+    <string name="settings_privacy">隐私政策</string>
+    <string name="settings_help">帮助</string>
+    <string name="settings_feedback">反馈</string>
+    <string name="app_version">1.0.0</string>
+    
+    <!-- Actions -->
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="delete">删除</string>
+    <string name="save">保存</string>
+    <string name="edit">编辑</string>
 </resources>

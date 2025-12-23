@@ -3,21 +3,59 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="color_primary">#FF4F46E5</color>
+    <!-- Primary Colors -->
+    <color name="color_primary">#FF6366F1</color>
+    <color name="color_primary_dark">#FF4F46E5</color>
+    <color name="color_primary_light">#FFA5B4FC</color>
     <color name="color_on_primary">#FFFFFFFF</color>
     <color name="color_primary_container">#FFEEF2FF</color>
     <color name="color_on_primary_container">#FF1E1B4B</color>
 
+    <!-- Secondary Colors -->
     <color name="color_secondary">#FF06B6D4</color>
-    <color name="color_on_secondary">#FF001018</color>
+    <color name="color_secondary_dark">#FF0891B2</color>
+    <color name="color_secondary_light">#FF67E8F9</color>
+    <color name="color_on_secondary">#FFFFFFFF</color>
+    <color name="color_secondary_container">#FFE0F2FE</color>
+    <color name="color_on_secondary_container">#FF082F49</color>
 
-    <color name="color_background">#FFF7F8FA</color>
-    <color name="color_on_background">#FF111827</color>
+    <!-- Tertiary Colors -->
+    <color name="color_tertiary">#FFEC4899</color>
+    <color name="color_on_tertiary">#FFFFFFFF</color>
+    <color name="color_tertiary_container">#FFFCE7F3</color>
+
+    <!-- Success, Warning, Error -->
+    <color name="color_success">#FF10B981</color>
+    <color name="color_warning">#FFF59E0B</color>
+    <color name="color_error">#FFEF4444</color>
+    <color name="color_error_container">#FFFEF2F2</color>
+
+    <!-- Background & Surface -->
+    <color name="color_background">#FFF8FAFC</color>
+    <color name="color_on_background">#FF0F172A</color>
 
     <color name="color_surface">#FFFFFFFF</color>
-    <color name="color_on_surface">#FF111827</color>
-    <color name="color_surface_variant">#FFEEF0F4</color>
-    <color name="color_on_surface_variant">#FF6B7280</color>
+    <color name="color_on_surface">#FF0F172A</color>
+    <color name="color_surface_variant">#FFF1F5F9</color>
+    <color name="color_on_surface_variant">#FF64748B</color>
+    <color name="color_surface_tint">#FFF8FAFC</color>
 
-    <color name="color_outline">#FFD1D5DB</color>
+    <!-- Outline & Border -->
+    <color name="color_outline">#FFE2E8F0</color>
+    <color name="color_outline_variant">#FFF1F5F9</color>
+
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#FF6366F1</color>
+    <color name="gradient_end">#FF8B5CF6</color>
+    <color name="gradient_center">#FF7C3AED</color>
+
+    <!-- Overlay & Shadow -->
+    <color name="overlay_light">#1A000000</color>
+    <color name="overlay_medium">#4D000000</color>
+    <color name="overlay_dark">#80000000</color>
+    <color name="scrim">#99000000</color>
+
+    <!-- Special -->
+    <color name="ripple_color">#1A6366F1</color>
+    <color name="divider">#FFE2E8F0</color>
 </resources>
