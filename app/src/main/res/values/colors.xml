@@ -6,6 +6,7 @@
     <!-- Primary Colors -->
     <color name="color_primary">#FF6366F1</color>
     <color name="color_primary_dark">#FF4F46E5</color>
+    <color name="color_primary_variant">#FF4F46E5</color>
     <color name="color_primary_light">#FFA5B4FC</color>
     <color name="color_on_primary">#FFFFFFFF</color>
     <color name="color_primary_container">#FFEEF2FF</color>

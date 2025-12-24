@@ -6,6 +6,11 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,6 +22,7 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.google.android.material.button.MaterialButton
 import com.google.mediapipe.framework.image.BitmapImageBuilder
 import com.google.mediapipe.tasks.components.containers.NormalizedLandmark
 import com.google.mediapipe.tasks.core.BaseOptions
@@ -34,7 +40,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import top.isyuah.dev.yumuzk.mpipemvp.databinding.ActivityFeatureBinding
-import top.isyuah.dev.yumuzk.mpipemvp.data.api.AiConfig
 import top.isyuah.dev.yumuzk.mpipemvp.data.api.AiService
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.ExecutorService
@@ -69,7 +74,7 @@ class FeatureActivity : AppCompatActivity() {
     private val aiService: AiService by lazy {
         AiService(
             httpClient = httpClient,
-            config = AiConfig.default(apiKey = BuildConfig.SILICONFLOW_API_KEY),
+            apiBaseUrl = NetworkConfig.BASE_URL
         )
     }
 
@@ -217,54 +222,49 @@ class FeatureActivity : AppCompatActivity() {
     }
 
     private fun showAnalyzeDialog(crop: Bitmap) {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_pointing_result, null)
         val dialog = AlertDialog.Builder(this)
-            .setTitle("AI 指向分析")
+            .setView(dialogView)
             .setCancelable(false)
+            .create()
 
-        val layout = android.widget.LinearLayout(this)
-        layout.orientation = android.widget.LinearLayout.VERTICAL
-        layout.setPadding(40, 40, 40, 40)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        val cropView = android.widget.ImageView(this)
-        cropView.setImageBitmap(crop)
-        layout.addView(cropView, android.widget.LinearLayout.LayoutParams(700, 700).apply {
-            gravity = android.view.Gravity.CENTER
-            setMargins(0, 0, 0, 30)
-        })
+        val ivCrop = dialogView.findViewById<ImageView>(R.id.iv_crop_preview)
+        val tvAnalysis = dialogView.findViewById<TextView>(R.id.tv_analysis_content)
+        val btnAction = dialogView.findViewById<MaterialButton>(R.id.btn_action)
+        val btnClose = dialogView.findViewById<ImageButton>(R.id.btn_close)
+        val pbLoading = dialogView.findViewById<ProgressBar>(R.id.pb_loading)
 
-        val statusText = TextView(this)
-        statusText.text = "点击“发送AI”开始识别图片内容..."
-        layout.addView(statusText)
+        ivCrop.setImageBitmap(crop)
 
-        dialog.setView(layout)
-        dialog.setPositiveButton("发送AI", null)
-        dialog.setNegativeButton("取消", null)
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
 
-        val alertDialog = dialog.create()
-        alertDialog.show()
-
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { buttonView ->
-            statusText.text = "正在处理图片并请求 AI..."
-            buttonView.isEnabled = false
+        btnAction.setOnClickListener {
+            tvAnalysis.text = "正在处理图片并请求 AI..."
+            pbLoading.visibility = View.VISIBLE
+            btnAction.isEnabled = false
+            
             analyzeImageWithAI(
                 bitmap = crop,
-                outputView = statusText,
-                onFinished = { buttonView.isEnabled = true },
+                onResult = { result ->
+                    tvAnalysis.text = result
+                    pbLoading.visibility = View.GONE
+                    btnAction.text = "再次分析"
+                    btnAction.isEnabled = true
+                }
             )
         }
+
+        dialog.show()
     }
 
     private fun analyzeImageWithAI(
         bitmap: Bitmap,
-        outputView: TextView,
-        onFinished: () -> Unit,
+        onResult: (String) -> Unit,
     ) {
-        if (BuildConfig.SILICONFLOW_API_KEY.isBlank()) {
-            outputView.text = "未配置 API Key：请在 local.properties 设置 SILICONFLOW_API_KEY"
-            onFinished()
-            return
-        }
-
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
         val base64Image = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.NO_WRAP)
@@ -277,11 +277,7 @@ class FeatureActivity : AppCompatActivity() {
 
             runOnUiThread {
                 if (isFinishing || isDestroyed) return@runOnUiThread
-
-                outputView.text = result.getOrElse { e ->
-                    e.message ?: "请求失败（未知错误）"
-                }
-                onFinished()
+                onResult(result.getOrElse { e -> e.message ?: "请求失败（未知错误）" })
             }
         }
     }

@@ -16,6 +16,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val cardFeature = view.findViewById<MaterialCardView>(R.id.card_feature)
         val cardSynonym = view.findViewById<MaterialCardView>(R.id.card_synonym)
         val cardPhoto = view.findViewById<MaterialCardView>(R.id.card_photo_search)
+        val cardAlgoExp = view.findViewById<MaterialCardView>(R.id.card_algo_exp)
 
         cardFeature.setOnClickListener {
             startActivity(Intent(requireContext(), FeatureActivity::class.java))
@@ -28,6 +29,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 .replace(R.id.fragment_container, FirstFragment())
                 .addToBackStack(null)
                 .commit()
+        }
+        cardAlgoExp.setOnClickListener {
+            startActivity(Intent(requireContext(), AlgoExperimentActivity::class.java))
         }
 
         // Handle WindowInsets so bottom navigation / gesture bar doesn't cover content.
@@ -57,4 +61,3 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         ViewCompat.requestApplyInsets(scroll)
     }
 }
-
