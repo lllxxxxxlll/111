@@ -3,43 +3,64 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="@color/color_background"
     android:clipChildren="false"
     android:clipToPadding="false">
 
-    <TextView
-        android:id="@+id/tv_home_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/home_title"
-        android:textAppearance="?attr/textAppearanceHeadlineMedium"
-        android:textColor="@color/color_on_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0" />
-
-    <TextView
-        android:id="@+id/tv_home_subtitle"
+    <!-- Welcome Banner -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_welcome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:text="@string/home_subtitle"
-        android:textAppearance="?attr/textAppearanceBodyMedium"
-        android:textColor="@color/color_on_surface_variant"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_home_title" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_gradient_primary"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/tv_welcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/welcome_message"
+                android:textAppearance="@style/TextAppearance.MPipeMVP.Headline"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_welcome_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/welcome_subtitle"
+                android:textAppearance="@style/TextAppearance.MPipeMVP.Body"
+                android:textColor="@color/color_primary_light"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Features Grid -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_home"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
+        android:fillViewport="false"
         android:clipToPadding="false"
-        android:paddingBottom="0dp"
+        android:paddingBottom="16dp"
         android:background="@android:color/transparent"
-        app:layout_constraintTop_toBottomOf="@id/tv_home_subtitle"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/card_welcome"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -47,200 +68,177 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_feature"
+            <!-- Feature Cards Grid -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                app:cardBackgroundColor="@color/color_surface"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
-                app:strokeColor="@color/color_outline"
-                app:strokeWidth="1dp">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="18dp">
+                <!-- Photo Search Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_photo_search"
+                    android:layout_width="0dp"
+                    android:layout_height="180dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/color_surface"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
 
-                    <TextView
-                        android:id="@+id/tv_feature_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/feature_card_title"
-                        android:textAppearance="?attr/textAppearanceTitleLarge"
-                        android:textColor="@color/color_on_surface"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="20dp">
 
-                    <TextView
-                        android:id="@+id/tv_feature_desc"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/feature_card_desc"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:textColor="@color/color_on_surface_variant"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_feature_title" />
+                        <ImageView
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:src="@drawable/ic_search"
+                            android:tint="@color/color_primary"
+                            android:contentDescription="@string/photo_search_card_title" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_enter_feature"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:minHeight="52dp"
-                        android:text="@string/enter_feature"
-                        app:cornerRadius="16dp"
-                        app:icon="@drawable/ic_nav_home"
-                        app:iconPadding="10dp"
-                        app:iconTint="@color/color_primary"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_feature_desc"
-                        app:strokeColor="@color/color_primary"
-                        app:strokeWidth="1dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/photo_search_card_title"
+                            android:textAppearance="@style/TextAppearance.MPipeMVP.Title"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            android:gravity="center" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/photo_search_subtitle"
+                            android:textAppearance="@style/TextAppearance.MPipeMVP.Body"
+                            android:textSize="13sp"
+                            android:gravity="center" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-            </com.google.android.material.card.MaterialCardView>
+                <!-- Feature Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_feature"
+                    android:layout_width="0dp"
+                    android:layout_height="180dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/color_surface"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="20dp">
+
+                        <ImageView
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:src="@drawable/ic_nav_home"
+                            android:tint="@color/color_secondary"
+                            android:contentDescription="@string/feature_card_title" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/feature_card_title"
+                            android:textAppearance="@style/TextAppearance.MPipeMVP.Title"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/feature_subtitle"
+                            android:textAppearance="@style/TextAppearance.MPipeMVP.Body"
+                            android:textSize="13sp"
+                            android:gravity="center" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Synonym Card (Full Width) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_synonym"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardBackgroundColor="@color/color_surface"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
-                app:strokeColor="@color/color_outline"
-                app:strokeWidth="1dp">
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="18dp">
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/tv_syn_title"
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_nav_home"
+                        android:tint="@color/color_tertiary"
+                        android:contentDescription="@string/synonym_card_title" />
+
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/synonym_card_title"
-                        android:textAppearance="?attr/textAppearanceTitleLarge"
-                        android:textColor="@color/color_on_surface"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_weight="1"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_syn_desc"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/synonym_card_desc"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:textColor="@color/color_on_surface_variant"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_syn_title" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/synonym_card_title"
+                            android:textAppearance="@style/TextAppearance.MPipeMVP.Title"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_synonym_compare"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:minHeight="52dp"
-                        android:text="@string/enter_synonym_compare"
-                        app:cornerRadius="16dp"
-                        app:icon="@drawable/ic_nav_home"
-                        app:iconPadding="10dp"
-                        app:iconTint="@color/color_primary"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_syn_desc"
-                        app:strokeColor="@color/color_primary"
-                        app:strokeWidth="1dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/synonym_card_desc"
+                            android:textAppearance="@style/TextAppearance.MPipeMVP.Body"
+                            android:textSize="14sp" />
+                    </LinearLayout>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_photo_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                app:cardBackgroundColor="@color/color_surface"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
-                app:strokeColor="@color/color_outline"
-                app:strokeWidth="1dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="18dp">
-
-                    <TextView
-                        android:id="@+id/tv_photo_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/photo_search_card_title"
-                        android:textAppearance="?attr/textAppearanceTitleLarge"
-                        android:textColor="@color/color_on_surface"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_photo_desc"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/photo_search_card_desc"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:textColor="@color/color_on_surface_variant"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_photo_title" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_photo_search"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:minHeight="52dp"
-                        android:text="@string/enter_photo_search"
-                        app:cornerRadius="16dp"
-                        app:icon="@drawable/ic_nav_home"
-                        app:iconPadding="10dp"
-                        app:iconTint="@color/color_primary"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_photo_desc"
-                        app:strokeColor="@color/color_primary"
-                        app:strokeWidth="1dp" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_back"
+                        android:rotation="180"
+                        android:tint="@color/color_on_surface_variant"
+                        android:contentDescription="@string/enter_synonym_compare" />
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

@@ -3,6 +3,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.plugin.serialization) version "2.0.21"
 }
 
 fun String.escapeForJavaString(): String = replace("\\", "\\\\").replace("\"", "\\\"")
@@ -19,6 +20,18 @@ val siliconflowApiKey: String =
             ?: ""
     }.escapeForJavaString()
 
+val dashscopeApiKey: String =
+    run {
+        val properties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { properties.load(it) }
+        }
+        properties.getProperty("DASHSCOPE_API_KEY")
+            ?: System.getenv("DASHSCOPE_API_KEY")
+            ?: "sk-4ec0c58f7a5c442680e1f5b56c590b3f"
+    }.escapeForJavaString()
+
 android {
     namespace = "top.isyuah.dev.yumuzk.mpipemvp"
     compileSdk = 35
@@ -33,6 +46,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "SILICONFLOW_API_KEY", "\"$siliconflowApiKey\"")
+        buildConfigField("String", "DASHSCOPE_API_KEY", "\"$dashscopeApiKey\"")
     }
 
     buildTypes {
@@ -67,6 +81,8 @@ dependencies {
     implementation(libs.mediapipe.tasks.vision)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)
+    implementation(libs.kotlinx.serialization.json)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

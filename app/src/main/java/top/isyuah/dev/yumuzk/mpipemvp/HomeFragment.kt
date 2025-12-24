@@ -8,23 +8,26 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.core.widget.NestedScrollView
-import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val btnFeature = view.findViewById<MaterialButton>(R.id.btn_enter_feature)
-        val btnSynonym = view.findViewById<MaterialButton>(R.id.btn_synonym_compare)
-        val btnPhoto = view.findViewById<MaterialButton>(R.id.btn_photo_search)
+        val cardFeature = view.findViewById<MaterialCardView>(R.id.card_feature)
+        val cardSynonym = view.findViewById<MaterialCardView>(R.id.card_synonym)
+        val cardPhoto = view.findViewById<MaterialCardView>(R.id.card_photo_search)
 
-        btnFeature.setOnClickListener {
+        cardFeature.setOnClickListener {
             startActivity(Intent(requireContext(), FeatureActivity::class.java))
         }
-        btnSynonym.setOnClickListener {
+        cardSynonym.setOnClickListener {
             startActivity(Intent(requireContext(), SynonymCompareActivity::class.java))
         }
-        btnPhoto.setOnClickListener {
-            startActivity(Intent(requireContext(), PhotoSearchActivity::class.java))
+        cardPhoto.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, FirstFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         // Handle WindowInsets so bottom navigation / gesture bar doesn't cover content.
