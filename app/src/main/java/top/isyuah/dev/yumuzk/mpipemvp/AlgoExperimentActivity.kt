@@ -58,6 +58,7 @@ class AlgoExperimentActivity : AppCompatActivity() {
     private var lastSyncedMatrix: List<List<Int>>? = null
     private var stateChangeJob: Job? = null
 
+    // For Visual Smoothing & Latched Alignment
     private var lastSmoothCorners: List<PointF>? = null
     private var lostDetectionCount = 0
     private val MAX_LOST_FRAMES = 8 
@@ -197,7 +198,7 @@ class AlgoExperimentActivity : AppCompatActivity() {
 
     private suspend fun syncStatusToAi(matrix: List<List<Int>>, event: String) {
         val matrixStr = matrix.joinToString("\n") { row -> row.joinToString(",") }
-        val prompt = "物理更新: $event\n当前矩阵:\n$matrixStr"
+        val prompt = "物理更新: $event | 算法: $selectedAlgo\n当前矩阵:\n$matrixStr"
         try {
             aiService.chat(sessionId = sessionId, prompt = prompt)
             withContext(Dispatchers.Main) {
@@ -364,10 +365,10 @@ class AlgoExperimentActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (bestCorners != null) {
-                        val newViewCorners = mapBmpToScreen(bestCorners!!, bitmap.width.toFloat(), bitmap.height.toFloat())
-                        if (isNearUiGrid(newViewCorners, gridRect)) {
-                            lastSmoothCorners = if (lastSmoothCorners == null) newViewCorners
-                            else smoothTransition(lastSmoothCorners!!, newViewCorners)
+                        val viewCorners = mapBmpToScreen(bestCorners!!, bitmap.width.toFloat(), bitmap.height.toFloat())
+                        if (isNearUiGrid(viewCorners, gridRect)) {
+                            lastSmoothCorners = if (lastSmoothCorners == null) viewCorners
+                            else smoothTransition(lastSmoothCorners!!, viewCorners)
                             
                             binding.overlay.setSnapCorners(lastSmoothCorners)
                             binding.overlay.setAlignmentState(true)
@@ -412,7 +413,7 @@ class AlgoExperimentActivity : AppCompatActivity() {
             delay(1200)
             val matrix = sampleMatrixFromImage(bitmap, corners)
             if (matrix != lastSyncedMatrix) {
-                syncStatusToAi(matrix, "棋盘变化")
+                syncStatusToAi(matrix, "物理棋盘变化")
                 lastSyncedMatrix = matrix
             }
         }

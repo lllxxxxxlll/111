@@ -92,8 +92,13 @@ dependencies {
     // Image loading
     implementation("com.github.bumptech.glide:glide:4.15.1")
     
-    // OpenCV for Android (Lightweight community version)
+    // OpenCV for Android
     implementation("com.quickbirdstudios:opencv-contrib:4.5.3.0")
+
+    // Markdown Rendering
+    implementation(libs.markwon.core)
+    implementation(libs.markwon.ext.tables)
+    implementation(libs.markwon.ext.strikethrough)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
