@@ -6,6 +6,7 @@
     <!-- Primary Colors -->
     <color name="color_primary">#FF6366F1</color>
     <color name="color_primary_dark">#FF4F46E5</color>
+    <color name="color_primary_variant">#FF4F46E5</color>
     <color name="color_primary_light">#FFA5B4FC</color>
     <color name="color_on_primary">#FFFFFFFF</color>
     <color name="color_primary_container">#FFEEF2FF</color>
@@ -58,4 +59,8 @@
     <!-- Special -->
     <color name="ripple_color">#1A6366F1</color>
     <color name="divider">#FFE2E8F0</color>
+    
+    <!-- Chat Bubbles -->
+    <color name="chat_user_bg">#FFE3F2FD</color>
+    <color name="chat_ai_bg">#FFF5F5F5</color>
 </resources>
