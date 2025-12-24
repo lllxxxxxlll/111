@@ -91,6 +91,10 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     // Image loading
     implementation("com.github.bumptech.glide:glide:4.15.1")
+    
+    // OpenCV for Android (Lightweight community version)
+    implementation("com.quickbirdstudios:opencv-contrib:4.5.3.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

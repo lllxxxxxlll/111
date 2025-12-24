@@ -59,4 +59,8 @@
     <!-- Special -->
     <color name="ripple_color">#1A6366F1</color>
     <color name="divider">#FFE2E8F0</color>
+    
+    <!-- Chat Bubbles -->
+    <color name="chat_user_bg">#FFE3F2FD</color>
+    <color name="chat_ai_bg">#FFF5F5F5</color>
 </resources>

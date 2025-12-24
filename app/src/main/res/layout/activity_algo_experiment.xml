@@ -57,6 +57,18 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- Center Floating Button for Algorithm Execution/Action -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_action_trigger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="Execute"
+        app:srcCompat="@drawable/ic_search"
+        app:backgroundTint="@color/color_secondary"
+        app:tint="@color/white" />
+
     <!-- Floating Button for AI Chat -->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_ai_chat"
