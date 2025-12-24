@@ -8,11 +8,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import io.noties.markwon.Markwon
 
 data class ChatMessage(var text: String, val isUser: Boolean)
 
 class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
     private val messages = mutableListOf<ChatMessage>()
+    private var markwon: Markwon? = null
 
     fun addMessage(message: ChatMessage) {
         messages.add(message)
@@ -27,8 +29,11 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
+        if (markwon == null) {
+            markwon = Markwon.create(parent.context)
+        }
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_chat_message, parent, false)
-        return ChatViewHolder(view)
+        return ChatViewHolder(view, markwon!!)
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
@@ -38,13 +43,18 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
     override fun getItemCount() = messages.size
 
-    class ChatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ChatViewHolder(view: View, private val markwon: Markwon) : RecyclerView.ViewHolder(view) {
         private val cardMessage: MaterialCardView = view.findViewById(R.id.card_message)
         private val tvMessage: TextView = view.findViewById(R.id.tv_message_text)
         private val container: LinearLayout = view as LinearLayout
 
         fun bind(message: ChatMessage) {
-            tvMessage.text = message.text
+            if (message.isUser) {
+                tvMessage.text = message.text // User messages usually don't need MD
+            } else {
+                markwon.setMarkdown(tvMessage, message.text)
+            }
+            
             val params = cardMessage.layoutParams as LinearLayout.LayoutParams
             if (message.isUser) {
                 container.gravity = Gravity.END
